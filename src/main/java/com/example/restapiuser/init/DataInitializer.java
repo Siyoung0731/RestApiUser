@@ -1,7 +1,7 @@
-package com.example.init;
+package com.example.restapiuser.init;
 
-import com.example.entity.UserEntity;
-import com.example.repository.UserRepository;
+import com.example.restapiuser.entity.UserEntity;
+import com.example.restapiuser.repository.UserRepository;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;

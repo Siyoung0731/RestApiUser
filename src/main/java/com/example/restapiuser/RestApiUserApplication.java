@@ -1,4 +1,4 @@
-package com.example.restapiuser.restapiuser;
+package com.example.restapiuser;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
