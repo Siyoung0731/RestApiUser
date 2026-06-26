@@ -1,19 +1,22 @@
 package com.example.restapiuser.controller;
 
+import com.example.restapiuser.dto.UserCreateRequest;
 import com.example.restapiuser.dto.UserResponse;
 import com.example.restapiuser.service.UserService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 import java.util.List;
 
 @RestController         // controller + responsebody
 @RequestMapping("/api/users")
 public class UserRestController {
 
-    private final UserService userService;
+    private UserService userService;
 
     public UserRestController(UserService userService) {
         this.userService = userService;
@@ -23,5 +26,21 @@ public class UserRestController {
     public List<UserResponse> list(
             @RequestParam(required = false) String keyword) {
         return userService.findUsers(keyword);
+    }
+
+    //회원가입 : Create : Insert
+    // @RequestBody : 넘어오는 파라미터는 json 이다
+    //Post
+    @PostMapping
+    public ResponseEntity<UserResponse> create(
+            @Valid @RequestBody UserCreateRequest request){
+
+        UserResponse response = userService.createUser(request);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{userid}")
+                .buildAndExpand(response.userid())              //record 는 getUserid() -> response.userid()
+                .toUri();
+        return ResponseEntity.created(location).body(response);
     }
 }
