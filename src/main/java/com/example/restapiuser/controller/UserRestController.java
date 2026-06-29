@@ -1,5 +1,6 @@
 package com.example.restapiuser.controller;
 
+import com.example.restapiuser.dto.DeleteReponse;
 import com.example.restapiuser.dto.UserCreateRequest;
 import com.example.restapiuser.dto.UserResponse;
 import com.example.restapiuser.service.UserService;
@@ -42,5 +43,12 @@ public class UserRestController {
                 .buildAndExpand(response.userid())              //record 는 getUserid() -> response.userid()
                 .toUri();
         return ResponseEntity.created(location).body(response);
+    }
+
+    // 회원 삭제 DELETE
+    @DeleteMapping("/{id}")
+    public DeleteReponse delete(@PathVariable String userid) {
+        userService.deleteUser(userid);
+        return new DeleteReponse(userid, true);
     }
 }

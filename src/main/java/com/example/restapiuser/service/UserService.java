@@ -37,7 +37,7 @@ public class UserService {
                 .toList();
                 // list.stream() -> ArrayList 로 변경
     }
-
+    // 회원 추가
     @Transactional
     public UserResponse createUser(@Valid UserCreateRequest request) {
         if(userRepository.existsById(request.userid())) {
@@ -53,5 +53,17 @@ public class UserService {
 
         UserEntity savedUser = userRepository.save(user);
         return UserResponse.from(savedUser);
+    }
+    // 회원 삭제
+    public void deleteUser(String userid) {
+        UserEntity user = getUserEntity(userid);
+        userRepository.delete(user);        // 삭제
+    }
+
+    // userid 로 검색
+    private UserEntity getUserEntity(String userid) {
+        return userRepository.findById(userid)
+                .orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND,
+                        "사용자를 찾을 수 없습니다." + userid));
     }
 }
